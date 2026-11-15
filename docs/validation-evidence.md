@@ -33,3 +33,11 @@ Screenshots were visually inspected: readable desktop schedule, mobile controls,
 ## Required external evidence
 
 Real Canvas permission/API behavior, real model usefulness and billing, production OAuth, remote CI runs, protected environments/branches and independent human review were not established by these checks. Opt-in live tests and documented CI configuration are provided to gather those facts without manufacturing evidence.
+
+## Visual refresh and repository preparation — 2026-11-16
+
+The same project was copied into the user-selected `SE final` workspace, retaining its prior local Git history. The layout and styling were refreshed across all five pages without changing scheduling or credential behavior. Two real CLI integration checks were added for portable production startup, taking the offline total to 58; all 58 offline and 13 fixed evaluation tests, type/lint/schema/structure checks and production build passed. `npm start -- --port 5180` then served the homepage and configuration endpoint with HTTP 200 and was stopped after verification.
+
+The UI was checked using synthetic coursework on the separate IPv6 loopback origin, keeping the user's normal localhost workspace untouched. At 1440px, editing remaining hours and generating a real rule schedule succeeded. At 390px, the plan and navigation worked; an overflow in the hidden file inputs on Connections was found and corrected with properly clipped 1px controls. Screenshots are retained in the current chat outputs. The final width check confirmed all five pages fit 390px; both hidden file inputs measured 1×1px. Wide checks at 1440px and 1920px also had no page overflow, and the browser reported no console errors in the final review.
+
+GitHub uploads use the already signed-in Chrome account and a private `Innoall/StudyPilot` repository. Browser uploads produce new transport commits; the inherited source history remains in the local repository. Files are checked against a sanitized source manifest; user credentials, dependencies and runtime/build files are excluded. The temporary extension file-URL permission is restored after uploads. Upload completion must be established from the repository and remote archive, not inferred from this preparation record.

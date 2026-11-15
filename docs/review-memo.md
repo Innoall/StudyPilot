@@ -48,3 +48,7 @@ The copied project defaults to the portable execution profile and package/lock r
 Initial source upload does not establish that the independent test-review gate or branch protection has passed. Trusted CI verification scripts must first exist on the reviewed protected base branch. Future implementation PRs require actual tests-only approval evidence; `current.json` contains no invented independent review. Protected live evaluation and real model/Canvas evidence remain separate operational conditions.
 
 **Current follow-on verdict: publication preparation in progress; final tests, browser acceptance, upload result and remote CI must be recorded after they occur.** This is a coding-agent self-review note, not a human APPROVE signature.
+
+### Visual refresh validation
+
+The subsequent user-authorised presentation update passed 58 offline tests, 13 fixed evaluations, type/lint/schema/structure and production build checks. Portable `npm start -- --port 5180` served both the homepage and provider readiness endpoint with HTTP 200, then stopped. Browser review used separate synthetic coursework at 1440/1920px and all five pages at 390px. A hidden file-input CSS overflow was found and corrected; the final Connections page measured 390px total width. There was no new business logic or credential-policy change in this presentation work.
