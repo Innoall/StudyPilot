@@ -1,0 +1,10 @@
+{
+  // Deny by default; keep secrets and human-only policy outside agent write scope.
+  "default": { "read": false, "write": false, "network": false },
+  "allow": {
+    "read": ["src/**", "app/**", "lib/**", "test/**", "docs/**", "prompts/**", "README.md", "AGENTS.md", "architecture-blueprint.md", "Prompt.md", "package.json"],
+    "write": ["src/**", "test/**", "docs/**", "prompts/**", "scripts/**", ".github/workflows/**", "README.md", "AGENTS.md", "architecture-blueprint.md", "package.json", "package-lock.json", "tsconfig.json", "eslint.config.mjs", "components.json", "drizzle.config.ts"],
+    "network": ["declared dependency registries", "approved documentation hosts"]
+  },
+  "deny": [".env*", "**/*secret*", "**/*token*", "production-data/**", ".opencode/rules.md"]
+}
