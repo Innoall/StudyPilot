@@ -22,7 +22,7 @@ The application supports personal AI keys for CityU CSLab, OpenAI and DeepSeek, 
 
 ### 2. 下载和启动
 
-安装 [Git](https://git-scm.com/) 和 [Node.js](https://nodejs.org/)，Node.js 需为 **22.13 或更新版本**。本轮源码发布目标是 [Innoall/StudyPilot](https://github.com/Innoall/StudyPilot)；首次上传完成后可从该地址获取代码。
+安装 [Git](https://git-scm.com/) 和 [Node.js](https://nodejs.org/)，Node.js 需为 **22.13 或更新版本**。源码仓库为 [Innoall/StudyPilot](https://github.com/Innoall/StudyPilot)，当前为私有仓库，访问和克隆需要获准的 GitHub 账号。
 
 ```sh
 git clone https://github.com/Innoall/StudyPilot.git
@@ -182,3 +182,11 @@ Branch protection, protected environment reviewers and independent GitHub review
 ## Deployment status
 
 The historical demonstration URL is [StudyPilot preview](https://studypilot-cityu.lixinzi666666.chatgpt.site/). This README does not claim that it contains the current local changes or that its credentials and provider access have been verified in this session. Validate the selected release commit, host access settings, HTTPS and required live integrations before publishing.
+
+## 2026-11-16 visual refresh
+
+The desktop and mobile interfaces now share a spacious midnight-blue workspace, a current-deadline focus card, clearer metrics, consistent task lists, refined schedule blocks and unified forms. This changes presentation while retaining the validated scheduling and credential boundaries.
+
+The refresh passed 58 offline tests, 13 fixed AI/prompt evaluations, type/lint/schema/structural checks and production build. Actual production startup served HTTP 200 in the local verification. Responsive checks covered 1440px, 1920px and all five pages at 390px, including task editing and generation through the real rule API. External service calls were not part of this visual refresh.
+
+If a macOS launcher downloaded from the GitHub web interface lacks executable permission, run `chmod +x Start-StudyPilot.command` once before opening it. Terminal startup with `npm ci` and `npm run dev` is also supported.
