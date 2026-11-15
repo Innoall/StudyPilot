@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StudyPilot Requirements Registry",
+  "type": "object",
+  "required": ["project", "version", "requirements"],
+  "properties": {
+    "project": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "requirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "statement", "priority", "tradeoff", "fitCriterion"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[A-Z]+-[0-9]{3}$"},
+          "type": {"enum": ["functional", "invariant", "quality", "performance", "cost", "governance", "security"]},
+          "statement": {"type": "string", "minLength": 10},
+          "priority": {"enum": ["Must", "Should", "Could", "Won't"]},
+          "tradeoff": {"type": "string", "minLength": 5},
+          "fitCriterion": {
+            "type": "object",
+            "required": ["metric", "threshold", "verification"],
+            "properties": {"metric":{"type":"string"},"threshold":{"type":"string"},"verification":{"type":"string"}},
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

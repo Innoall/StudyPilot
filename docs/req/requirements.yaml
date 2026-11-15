@@ -1,0 +1,282 @@
+{
+  "project": "StudyPilot",
+  "version": "0.2.0",
+  "requirements": [
+    {
+      "id": "FR-001",
+      "type": "functional",
+      "statement": "A user can create, edit and remove courses with confirmation for cascading deletion.",
+      "priority": "Must",
+      "tradeoff": "Manual entry remains available without Canvas.",
+      "fitCriterion": {
+        "metric": "offline UI scenario passes",
+        "threshold": "100%",
+        "verification": "test/offline and manual acceptance"
+      }
+    },
+    {
+      "id": "FR-002",
+      "type": "functional",
+      "statement": "A user can create, prioritise, update, and remove assignments with deadlines and estimated effort.",
+      "priority": "Must",
+      "tradeoff": "Recurring tasks are deferred.",
+      "fitCriterion": {
+        "metric": "supported assignment operations",
+        "threshold": "5 of 5",
+        "verification": "offline acceptance suite"
+      }
+    },
+    {
+      "id": "FR-003",
+      "type": "functional",
+      "statement": "A user can configure weekly availability and planning preferences.",
+      "priority": "Must",
+      "tradeoff": "One-off calendar exceptions are deferred.",
+      "fitCriterion": {
+        "metric": "saved fields restored after reload",
+        "threshold": "100%",
+        "verification": "browser persistence test"
+      }
+    },
+    {
+      "id": "FR-004",
+      "type": "functional",
+      "statement": "The system creates a seven-day schedule from active assignments and availability.",
+      "priority": "Must",
+      "tradeoff": "The MVP optimises deadline risk before preference sophistication.",
+      "fitCriterion": {
+        "metric": "eligible estimated hours scheduled when capacity exists",
+        "threshold": "100%",
+        "verification": "test/offline/planner.test.mjs"
+      }
+    },
+    {
+      "id": "FR-005",
+      "type": "functional",
+      "statement": "The system provides an AI-generated summary and study suggestions when the provider is available.",
+      "priority": "Should",
+      "tradeoff": "The deterministic plan remains usable without AI.",
+      "fitCriterion": {
+        "metric": "valid provider responses parsed",
+        "threshold": "100%",
+        "verification": "test/offline/providers.test.mjs; test/evaluation; opt-in live-provider evaluation"
+      }
+    },
+    {
+      "id": "FR-006",
+      "type": "functional",
+      "statement": "The system reads current-user Canvas planning facts through a bounded read-only adapter and previews them before idempotent import.",
+      "priority": "Should",
+      "tradeoff": "Personal tokens are for controlled self-testing; shared production requires approved OAuth.",
+      "fitCriterion": {
+        "metric": "valid fixtures and repeat imports mapped correctly",
+        "threshold": "100%",
+        "verification": "test/offline/providers.test.mjs and data.test.mjs; opt-in live Canvas test"
+      }
+    },
+    {
+      "id": "INV-001",
+      "type": "invariant",
+      "statement": "No learning block may be placed outside user availability.",
+      "priority": "Must",
+      "tradeoff": "Unscheduled work is reported rather than forced into an invalid time.",
+      "fitCriterion": {
+        "metric": "availability escapes",
+        "threshold": "0",
+        "verification": "test/offline/planner.test.mjs"
+      }
+    },
+    {
+      "id": "INV-002",
+      "type": "invariant",
+      "statement": "Runtime AI cannot create assignments or alter authoritative deadlines and schedule blocks.",
+      "priority": "Must",
+      "tradeoff": "AI remains advisory even when its proposed schedule appears better.",
+      "fitCriterion": {
+        "metric": "AI authority escapes",
+        "threshold": "0",
+        "verification": "semantic evaluation set and response merge test"
+      }
+    },
+    {
+      "id": "INV-003",
+      "type": "invariant",
+      "statement": "The application never requests, stores or transmits a CityUHK EID password.",
+      "priority": "Must",
+      "tradeoff": "Personal access-token self-testing is distinct from school password authentication.",
+      "fitCriterion": {
+        "metric": "EID password collection fields and events",
+        "threshold": "0",
+        "verification": "static permission check and browser review"
+      }
+    },
+    {
+      "id": "SEC-001",
+      "type": "security",
+      "statement": "User-supplied credentials exist only in page memory and the current request; credentials are never saved, logged, backed up or returned.",
+      "priority": "Must",
+      "tradeoff": "Keys must be re-entered after page reload or disconnect.",
+      "fitCriterion": {
+        "metric": "secret exposures",
+        "threshold": "0",
+        "verification": "secret scan and API contract tests"
+      }
+    },
+    {
+      "id": "PRIV-001",
+      "type": "governance",
+      "statement": "Only task aliases, deadlines, effort and fixed preference categories are sent to the selected AI provider.",
+      "priority": "Must",
+      "tradeoff": "Free-text names, titles, goals and student identifiers remain local.",
+      "fitCriterion": {
+        "metric": "personal identifiers in AI payload",
+        "threshold": "0",
+        "verification": "payload inspection test"
+      }
+    },
+    {
+      "id": "QA-001",
+      "type": "quality",
+      "statement": "Core manual-entry and rule-planning workflows remain usable when all external services are unavailable.",
+      "priority": "Must",
+      "tradeoff": "Browser-local data is device-specific in the MVP.",
+      "fitCriterion": {
+        "metric": "offline core scenarios passing",
+        "threshold": "100%",
+        "verification": "offline suite"
+      }
+    },
+    {
+      "id": "PERF-001",
+      "type": "performance",
+      "statement": "The deterministic planner returns within 200 ms for 100 assignments and 14 availability slots on a typical laptop.",
+      "priority": "Should",
+      "tradeoff": "Optimisation beyond this scale is deferred.",
+      "fitCriterion": {
+        "metric": "p95 local planner latency",
+        "threshold": "<=200ms",
+        "verification": "offline benchmark"
+      }
+    },
+    {
+      "id": "COST-001",
+      "type": "cost",
+      "statement": "One plan generation makes at most one external AI request.",
+      "priority": "Should",
+      "tradeoff": "No iterative agent loop at runtime.",
+      "fitCriterion": {
+        "metric": "AI requests per generation",
+        "threshold": "<=1",
+        "verification": "adapter call-count test"
+      }
+    },
+    {
+      "id": "GOV-001",
+      "type": "governance",
+      "statement": "Every code or prompt pull request updates the AI-use log and passes required gates.",
+      "priority": "Must",
+      "tradeoff": "Adds review overhead to preserve auditability.",
+      "fitCriterion": {
+        "metric": "ungated merges",
+        "threshold": "0",
+        "verification": "GitHub branch protection and CI"
+      }
+    },
+    {
+      "id": "FR-007",
+      "type": "functional",
+      "statement": "Users can export a versioned backup and preview and confirm valid backups before restoration.",
+      "priority": "Must",
+      "tradeoff": "Connections and credentials are excluded from every backup.",
+      "fitCriterion": {
+        "metric": "invalid imports applied",
+        "threshold": "0",
+        "verification": "test/offline/data.test.mjs and browser acceptance"
+      }
+    },
+    {
+      "id": "FR-008",
+      "type": "functional",
+      "statement": "Users can export a current verified schedule as an escaped Hong Kong calendar file.",
+      "priority": "Should",
+      "tradeoff": "Stale schedules require regeneration before export.",
+      "fitCriterion": {
+        "metric": "invalid calendar blocks exported",
+        "threshold": "0",
+        "verification": "test/offline/data.test.mjs and browser acceptance"
+      }
+    },
+    {
+      "id": "FR-009",
+      "type": "functional",
+      "statement": "A user can verify their own Canvas access token in controlled self-testing and disconnect without affecting Canvas records.",
+      "priority": "Should",
+      "tradeoff": "Production token self-testing is disabled by default; shared use requires OAuth.",
+      "fitCriterion": {
+        "metric": "cross-account credential reuse",
+        "threshold": "0",
+        "verification": "test/offline/providers.test.mjs and api.test.mjs"
+      }
+    },
+    {
+      "id": "FR-010",
+      "type": "functional",
+      "statement": "A user can select rules, server AI or their own supported AI service, model and key using their own quota.",
+      "priority": "Must",
+      "tradeoff": "Personal mode never silently falls back to a shared AI key.",
+      "fitCriterion": {
+        "metric": "personal-to-shared fallbacks",
+        "threshold": "0",
+        "verification": "test/offline/providers.test.mjs and api.test.mjs"
+      }
+    },
+    {
+      "id": "INV-006",
+      "type": "invariant",
+      "statement": "No schedule block starts in the past, overlaps another block or ends after the exact assignment deadline.",
+      "priority": "Must",
+      "tradeoff": "Remaining work is reported instead of violating a deadline.",
+      "fitCriterion": {
+        "metric": "temporal safety escapes",
+        "threshold": "0",
+        "verification": "test/offline/planner.test.mjs"
+      }
+    },
+    {
+      "id": "SEC-002",
+      "type": "security",
+      "statement": "External requests use approved HTTPS destinations, reject redirects and keep pagination on the same approved collection.",
+      "priority": "Must",
+      "tradeoff": "Arbitrary provider endpoints cannot be supplied by a browser.",
+      "fitCriterion": {
+        "metric": "off-allowlist credential requests",
+        "threshold": "0",
+        "verification": "test/offline/providers.test.mjs"
+      }
+    },
+    {
+      "id": "PRIV-002",
+      "type": "governance",
+      "statement": "Canvas identities use separate local workspaces and clearing a connection clears its page-memory credentials.",
+      "priority": "Must",
+      "tradeoff": "Browser-local data is device-specific and is not a cloud account.",
+      "fitCriterion": {
+        "metric": "cross-workspace credential persistence",
+        "threshold": "0",
+        "verification": "API isolation tests and browser acceptance"
+      }
+    },
+    {
+      "id": "QA-002",
+      "type": "quality",
+      "statement": "Provider changes replay fixed contract evaluations, while releases claiming live AI support require live model evidence.",
+      "priority": "Must",
+      "tradeoff": "Offline mocked contracts do not establish model usefulness.",
+      "fitCriterion": {
+        "metric": "undetected fixed safety violations",
+        "threshold": "0",
+        "verification": "test/evaluation and opt-in test/live"
+      }
+    }
+  ]
+}
