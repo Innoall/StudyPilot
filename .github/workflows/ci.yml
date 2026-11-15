@@ -1,0 +1,117 @@
+name: Blocking Gates
+
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_review:
+    types: [submitted, dismissed]
+  workflow_dispatch:
+    inputs:
+      run_live_evaluation:
+        description: Run billed provider evaluation using the protected provider-evaluation environment
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: gates-${{ github.event.pull_request.number || github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  test-approval:
+    if: github.event_name == 'pull_request' || github.event_name == 'pull_request_review'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      # The verifier is loaded from the base commit, not from PR-controlled code.
+      # No pull_request_target or repository/provider secrets are used.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: .trusted-gates
+          sparse-checkout: scripts
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Verify prior independent approval of the tests-only commit
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          node -e 'if (!require("node:fs").existsSync(".trusted-gates/scripts/verify-test-approval.mjs")) throw new Error("Governance bootstrap pending: a maintainer must review and install the verifier on the protected base branch first")'
+          node .trusted-gates/scripts/verify-test-approval.mjs
+      - name: AI-use log gate
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: node .trusted-gates/scripts/verify-ai-use-log.mjs "$BASE_SHA" "$HEAD_SHA"
+
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - name: Requirements schema gate
+        run: npm run validate:req
+      - name: Static analysis gates
+        run: |
+          npm run typecheck
+          npm run lint
+          node scripts/verify-structure.mjs
+          npm ls --depth=0
+      - name: Regression gate
+        run: npm run test:offline
+      - name: Production build
+        run: npm run build
+
+  semantic-evaluation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - name: Replay fixed response, privacy, injection and authority evaluation
+        run: node --experimental-strip-types --test test/evaluation/*.test.mjs
+
+  live-provider-evaluation:
+    if: github.event_name == 'workflow_dispatch' && inputs.run_live_evaluation
+    runs-on: ubuntu-latest
+    environment: provider-evaluation
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - name: Require real model responses for the selected release commit
+        env:
+          REQUIRE_LIVE_TESTS: "1"
+          STUDYPILOT_TEST_AI_KEY: ${{ secrets.STUDYPILOT_EVAL_AI_KEY }}
+          STUDYPILOT_TEST_AI_PROVIDER: ${{ vars.STUDYPILOT_EVAL_AI_PROVIDER }}
+          STUDYPILOT_TEST_AI_MODEL: ${{ vars.STUDYPILOT_EVAL_AI_MODEL }}
+        run: node --experimental-strip-types --test test/live/*.test.mjs
