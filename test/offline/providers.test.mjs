@@ -50,7 +50,8 @@ test("COST-001/INV-002 personal AI makes one request and only contributes adviso
   const result = await generateStudyPlan(data, personal, { now, env: {}, fetch: async (url, options) => {
     calls += 1;
     assert.equal(url, "https://api.openai.com/v1/chat/completions");
-    assert.equal(options.redirect, "error");
+    assert.equal(options.redirect, "manual");
+    assert.equal(options.cache, "no-store");
     assert.equal(options.headers.Authorization, "Bearer synthetic-test-key");
     assert.ok(!String(options.body).includes(personal.apiKey));
     assert.equal(JSON.parse(options.body).max_completion_tokens, 2000);
@@ -72,6 +73,23 @@ test("QA-001 personal AI errors never spend shared-provider quota or expose prov
   assert.equal(calls, 1); assert.equal(result.source, "rule-engine"); assert.equal(result.aiStatus, "unavailable");
   assert.ok(result.plan.length > 0);
   assert.ok(!JSON.stringify(result).includes("synthetic-provider-secret-error"));
+});
+
+test("SEC-002/COST-001 personal AI redirects never forward a key, expose bodies or spend shared quota", async () => {
+  const rule = await generateStudyPlan(data, { mode: "rules" }, { now });
+  for (const status of [301, 302, 303, 307, 308]) {
+    const requests = [];
+    const result = await generateStudyPlan(data, personal, { now, env: { SCHOOL_AI_API_KEY: "synthetic-shared-key", SCHOOL_AI_BASE_URL: "https://llm.cs.cityu.edu.hk/v1", SCHOOL_AI_MODEL: "shared" }, fetch: async (url, options) => {
+      requests.push({ url: String(url), authorization: options.headers.Authorization });
+      assert.equal(options.redirect, "manual");
+      return new Response("synthetic-private-redirect-body", { status, headers: { Location: "https://redirect.example.test/collect" } });
+    } });
+    assert.deepEqual(requests, [{ url: "https://api.openai.com/v1/chat/completions", authorization: "Bearer synthetic-test-key" }]);
+    assert.equal(result.source, "rule-engine");
+    assert.equal(result.aiStatus, "unavailable");
+    assert.deepEqual(result.plan, rule.plan);
+    for (const value of ["synthetic-private-redirect-body", "redirect.example.test", personal.apiKey, "synthetic-shared-key"]) assert.ok(!JSON.stringify(result).includes(value));
+  }
 });
 
 test("INV-002 fabricated schedule fields and truncated responses fall back unchanged", async () => {
@@ -126,7 +144,9 @@ test("FR-006 Canvas mapping uses real deadlines and submission status, skips und
 test("FR-006/SEC-001 live Canvas adapter authenticates only GET requests and paginates safely", async () => {
   const urls = [];
   const result = await syncCanvas({ baseUrl: "https://canvas.cityu.edu.hk", accessToken: "synthetic-canvas-key", action: "sync" }, { fetch: async (url, options) => {
-    urls.push(String(url)); assert.equal(options.method, "GET"); assert.equal(options.redirect, "error");
+    urls.push(String(url)); assert.equal(options.method, "GET"); assert.equal(options.redirect, "manual");
+    assert.equal(options.cache, "no-store");
+    assert.equal(options.headers["User-Agent"], "StudyPilot/0.2");
     assert.equal(options.headers.Authorization, "Bearer synthetic-canvas-key");
     if (String(url).endsWith("/users/self")) return Response.json({ id: 123, name: "Synthetic Student" });
     if (String(url).includes("/assignments")) return Response.json([{ id: 12, course_id: 11, name: "Essay", due_at: "2026-11-18T12:00:00Z" }]);
@@ -137,6 +157,22 @@ test("FR-006/SEC-001 live Canvas adapter authenticates only GET requests and pag
   assert.equal(result.profile.displayName, "Synthetic Student");
   assert.match(result.profile.workspaceId, /^[a-f0-9]{64}$/);
   assert.ok(!JSON.stringify(result).includes("synthetic-canvas-key"));
+});
+
+test("SEC-002 Canvas redirects never forward a token, expose provider bodies or return partial data", async () => {
+  for (const status of [301, 302, 303, 307, 308]) {
+    const requests = [];
+    await assert.rejects(syncCanvas({ baseUrl: "https://canvas.cityu.edu.hk", accessToken: "synthetic-canvas-key", action: "sync" }, { fetch: async (url, options) => {
+      requests.push({ url: String(url), authorization: options.headers.Authorization });
+      assert.equal(options.redirect, "manual");
+      return new Response("synthetic-private-redirect-body", { status, headers: { Location: "https://redirect.example.test/collect" } });
+    } }), error => {
+      assert.equal(error.code, "unavailable");
+      for (const value of ["synthetic-private-redirect-body", "redirect.example.test", "synthetic-canvas-key"]) assert.ok(!error.message.includes(value));
+      return true;
+    });
+    assert.deepEqual(requests, [{ url: "https://canvas.cityu.edu.hk/api/v1/users/self", authorization: "Bearer synthetic-canvas-key" }]);
+  }
 });
 
 test("SEC-001 Canvas pagination never sends a token to a second origin or arbitrary endpoint", async () => {
