@@ -23,9 +23,10 @@ export async function syncCanvas(input: CanvasConnection, dependencies: { fetch?
     requests += 1;
     if (requests > 50) throw new ProviderError("limit", "Canvas sync reached its request limit. Import a smaller selection.");
     let response: Response;
-    try { response = await requestFetch(url, { method: "GET", redirect: "error", cache: "no-store", headers: { Authorization: `Bearer ${accessToken}`, Accept: "application/json" }, signal }); }
+    try { response = await requestFetch(url, { method: "GET", redirect: "manual", cache: "no-store", headers: { Authorization: `Bearer ${accessToken}`, Accept: "application/json", "User-Agent": "StudyPilot/0.2" }, signal }); }
     catch (error) { throw new ProviderError(error instanceof Error && ["TimeoutError", "AbortError"].includes(error.name) ? "timeout" : "unavailable", "Canvas could not be reached. Check the connection and try again."); }
     if (!response.ok) {
+      if (response.status >= 300 && response.status < 400) throw new ProviderError("unavailable", "Canvas returned a redirect. The connection was stopped to protect your token.");
       if ([401, 403].includes(response.status)) throw new ProviderError("unauthorised", "Canvas did not authorise this request. Check the token, expiry and course permissions.");
       if (response.status === 429) throw new ProviderError("rate-limited", "Canvas is rate limiting requests. Wait before trying again.");
       throw new ProviderError("unavailable", "Canvas is temporarily unavailable.");

@@ -94,7 +94,7 @@ export async function generateStudyPlan(data: AppData, config: AiConfig = { mode
   const context = buildAiContext(data);
   if (context.omittedTaskCount) fallback.warnings.push(`AI advice considers the nearest ${context.tasks.length} active tasks to keep the request small. The rule engine still checks every task.`);
   try {
-    const response = await (dependencies.fetch ?? fetch)(`${baseUrl}/chat/completions`, { method: "POST", redirect: "error", cache: "no-store", headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` }, body: JSON.stringify({ model, ...(providerName === "openai" ? { max_completion_tokens: 2000 } : { max_tokens: 1200 }), response_format: { type: "json_object" }, messages: [{ role: "system", content: AI_SYSTEM_PROMPT }, { role: "user", content: JSON.stringify(context) }] }), signal: AbortSignal.timeout(20_000) });
+    const response = await (dependencies.fetch ?? fetch)(`${baseUrl}/chat/completions`, { method: "POST", redirect: "manual", cache: "no-store", headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` }, body: JSON.stringify({ model, ...(providerName === "openai" ? { max_completion_tokens: 2000 } : { max_tokens: 1200 }), response_format: { type: "json_object" }, messages: [{ role: "system", content: AI_SYSTEM_PROMPT }, { role: "user", content: JSON.stringify(context) }] }), signal: AbortSignal.timeout(20_000) });
     if (!response.ok) return { ...fallback, aiStatus: "unavailable" };
     try {
       const payload = await readBoundedJson(response, 32_768) as { choices?: Array<{ finish_reason?: string; message?: { content?: string } }> };
