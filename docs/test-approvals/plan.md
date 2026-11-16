@@ -23,3 +23,17 @@ Date: 2026-11-16, Asia/Hong_Kong. The user authorised the previously presented i
 5. Changed test requirements require a fresh test-plan review. Tests-only proposals may pass before implementation so the review can be obtained.
 
 The current interactive development session cannot manufacture a past GitHub review. A maintainer must review the governance bootstrap and this session's evidence before adopting the automated policy on the protected base branch. This exception is visible and is not reported as a passing merge gate.
+
+## Approved Canvas/AI runtime correction — 2026-11-16
+
+The user approved the separate concrete repair and test plan with “批准修复并测试”. The eight approved cases cover successful Canvas mapping/client identification, rejection of every standard HTTP redirect without forwarding credentials, successful AI advisory-only behavior, AI redirect failure without shared quota, actual adapter execution inside workerd with synthetic intercepted responses, an unauthenticated network-path check, the complete regression/build gates, and user-controlled personal-token reconnection. No real AI quota or agent-visible personal credential is needed.
+
+The correction preserves no-store caching and every existing destination, credential, pagination and authority invariant. Runtime compatibility tests supplement existing injected Node fetch tests so unsupported RequestInit options fail during offline verification. Personal-account verification is recorded separately from synthetic success. The implementation decision and its rationale are in ADR-002.
+
+## Approved readability and spacing maintenance — 2026-11-16
+
+Before implementation, the user received the concrete execution and acceptance plan at `/Users/niubili/Documents/Codex/2026-11-16/new-chat/outputs/StudyPilot-readable-layout-plan.md` and explicitly replied “是”. This approval covers larger typography and reduced whitespace across the five existing pages and editing dialogs, with CSS-only changes and no new dependencies, request contracts or credential-policy changes. Existing Canvas/AI transport corrections must be preserved.
+
+The scope supports QA-001 and the existing FR-001/FR-002/FR-003/FR-004/FR-005/FR-006 workflows. It does not introduce a new feature or invent a registered typography requirement. Positive acceptance checks compare readable body, label, button and form text, useful desktop content width, and reduced card/heading/empty-state gaps. Negative checks cover long synthetic course/task text, wrapped messages, backup-button groups, time/date controls, focus outlines and dialogs without clipping or whole-page horizontal overflow at 320px and 390px. Desktop and laptop layouts are checked at 1440px and 1280px.
+
+Verification reruns requirement/schema and structural validation, type checking, lint, all existing offline and fixed evaluation tests, and a production build. Browser acceptance uses an isolated synthetic workspace and makes no real provider calls. No new implementation-mirroring test source or `current.json` schema change is proposed. The first fresh verification passed, and synthetic responsive checks were observed; exact evidence is in `docs/validation-evidence.md`. Final re-verification after minor CSS refinements completed with exit 0, 65 offline tests, 13 evaluations and all required checks passing. The prior revision's passing results are not evidence for this styling revision. This chat approval is separate from the independent GitHub review required for a future governed merge.

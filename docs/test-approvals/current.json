@@ -8,6 +8,14 @@
     "verbatim": "先不管五人分工报告，先只做项目，但是要满足老师所有要求，然后对于之前说过的密钥问题，可以每个人登录时候输入自己canvas的密钥信息进去，然后对于接入的ai，可以有一个每个人接入自己的ai密钥选择，然后可以用自己的ai额度",
     "limitation": "Records interactive development authorisation only. This is not an independent GitHub review or a merge approval."
   },
+  "runtimeCorrectionAuthorisation": {
+    "decision": "approved",
+    "date": "2026-11-16",
+    "source": "User reply to the Canvas/AI connection fix and eight-case test-plan question in the current Codex conversation",
+    "verbatim": "批准修复并测试",
+    "scope": "Worker-compatible manual redirect rejection, Canvas client identification, explicit no-store support, synthetic runtime regression and full verification",
+    "limitation": "Interactive implementation and test approval only; no independent GitHub review or real-account success is implied."
+  },
   "githubReviewId": null,
   "approvedCommit": null,
   "mergeStatus": "Pending independent pre-implementation test review evidence on GitHub"
