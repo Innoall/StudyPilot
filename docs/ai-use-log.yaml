@@ -1,5 +1,20 @@
 version: 1
 entries:
+  - date: "2026-11-16"
+    actor: "Codex with a delegated synthetic runtime-test reviewer, under user approval"
+    purpose: "Diagnose and fix the Canvas connection failure and the identical AI transport incompatibility"
+    inputs: "User error screenshot and approved repair/test plan; source and synthetic unauthenticated diagnostics; no real credential or course record inspected"
+    outputs: "Worker-compatible manual redirect refusal, honest Canvas client identifier, pinned no-store-compatible runtime date, real-workerd synthetic adapter regression tests and ADR/test approval updates"
+    human_gates:
+      - "Concrete repair and eight-case test plan presented before editing adapters"
+      - "User explicitly replied: 批准修复并测试"
+      - "User entered their own token, reported successful preview and confirmed import in the application; agent inspected only safe UI success state"
+    risks_reviewed:
+      - "Never follow redirects or forward user credentials to Location"
+      - "Keep request-local keys, destination allowlists and no-store semantics"
+      - "AI errors must not spend shared quota or alter deterministic schedule"
+      - "Node mocks must not conceal unsupported workerd RequestInit options"
+    status: "Verified locally: 65 offline tests, 13 evaluations, schema/structure/type/lint and build passed; user-confirmed personal Canvas preview and safe UI import success observed; no actual AI request; remote upload and independent review not performed"
   - date: "2026-09-24"
     actor: "Codex coding agent under user supervision"
     purpose: "Create StudyPilot MVP, governance artifacts, tests, and deployment configuration"
@@ -70,3 +85,18 @@ entries:
       - "Initial trusted-verifier bootstrap and independent GitHub review must not be fabricated"
       - "Portable production start must use the installed vinext server, while managed Worker start retains Wrangler and its private runtime setup"
     status: "Publication preparation and visual work in progress; fresh verification, repository creation/upload and remote CI results are not yet claimed"
+  - date: "2026-11-16"
+    actor: "Codex with delegated read-only responsive review, under explicit user approval"
+    purpose: "Increase StudyPilot text sizes and reduce excess whitespace throughout the existing interface"
+    inputs: "Current CSS and component markup, user readability request, and the concrete StudyPilot-readable-layout-plan.md; no credentials, environment values or real student records inspected"
+    outputs: "CSS-only typography, spacing and responsive-layout revision; approved acceptance scope, synthetic responsive evidence and local review notes"
+    human_gates:
+      - "The execution and test plan was presented at /Users/niubili/Documents/Codex/2026-11-16/new-chat/outputs/StudyPilot-readable-layout-plan.md before implementation"
+      - "The user explicitly replied: 是"
+      - "Approval covers presentation maintenance and its stated checks; no new independent GitHub review is claimed"
+    risks_reviewed:
+      - "Larger text must not clip buttons, time controls, task filters, dialogs or narrow-screen navigation"
+      - "Hidden file inputs must remain visually hidden without introducing page overflow"
+      - "Existing Canvas/AI fixes, request contracts, quota ownership and page-memory key lifecycle remain unchanged"
+      - "Responsive checks use isolated synthetic data; fresh build and regression results must be recorded after completion"
+    status: "Initial fresh verify passed: 23 requirements, 65 offline tests, 13 fixed evaluations, structure/type/lint and build. Synthetic UI checks passed across five tabs at 1440/1280/1024/800/390/320px; final verification after minor CSS refinements passed with the same counts and zero failures"
