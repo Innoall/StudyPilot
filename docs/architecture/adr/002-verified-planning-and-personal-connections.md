@@ -46,3 +46,15 @@ Users re-enter keys after refresh. Device-local workspaces do not provide cloud 
 Trace to FR-001..010, INV-001..006, SEC-001/002, PRIV-001/002, COST-001, QA-001/002 and GOV-001. The previously presented tests cover temporal negatives, backup rejection, request-only credentials, provider boundaries, isolation, malicious output, offline fallback and fixed evaluation. The old planner failed nine new scenarios before fixes. Record actual green results in the review memo; do not manufacture teammate approval.
 
 Reopen this ADR for persistent keys, cloud accounts, arbitrary endpoints, model schedule authority, new dependencies or approved production Canvas OAuth. A failed safety test blocks dependent implementation and release; restore the preceding verified module or disable the affected external adapter.
+
+## Approved runtime compatibility correction — 2026-11-16
+
+After a real connection attempt failed, the user approved the concrete Canvas/AI transport fix and its eight-case test plan with the exact reply “批准修复并测试”. This is interactive implementation approval, not independent PR review.
+
+Workerd rejects `redirect: "error"` before sending a request. Both adapters now use `redirect: "manual"` and reject non-success responses without reading or following `Location`; Canvas reports a safe redirect error and AI retains its rule-only fallback. No redirect request forwards authentication. This preserves SEC-001/SEC-002 rather than enabling automatic redirects.
+
+The Worker configuration pins compatibility date `2026-05-15`, which includes no-store support, so the existing `cache: "no-store"` is supported deterministically. An explicit `cache_option_enabled` flag was rejected as redundant by the installed runtime; a pinned date selects the supported behavior without that flag. Canvas requests identify the application honestly as `StudyPilot/0.2`: unauthenticated diagnostics showed Canvas's CloudFront layer rejected a missing User-Agent with 403, while this application identifier reached the API and received its expected 401. Neither diagnostic authenticated a real account.
+
+Regression tests must exercise actual adapters inside Miniflare/workerd with synthetic intercepted responses, in addition to Node fixtures. The request-local credential lifecycle, destination allowlist, current-user GET scope, pagination bounds, import confirmation, AI quota ownership and formal OAuth policy remain the same. No dependency is added and no real AI call is part of validation.
+
+References: [Worker Request redirect modes](https://developers.cloudflare.com/workers/runtime-apis/request/), [cache-option compatibility](https://developers.cloudflare.com/changelog/post/2024-11-11-cache-no-store/).
