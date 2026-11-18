@@ -1,5 +1,21 @@
 version: 1
 entries:
+  - date: "2026-11-18"
+    actor: "Codex with delegated domain and governance work, under explicit user approval"
+    purpose: "Improve Canvas effort review, convenient session sync and default current-work views after user testing"
+    inputs: "User's three real-use observations, existing source and governance documents, and the concrete Canvas UX execution/test plan; no real credential, environment value or production student record inspected"
+    outputs: "ADR-003, extended FR-002/006 criteria, test/trace records and implementation for provisional effort, atomic batches, session-only automatic sync, recoverable source corrections/exclusions and historical filtering"
+    human_gates:
+      - "Concrete StudyPilot-Canvas-UX-plan-2026-11-18.md and 20 positive/negative scenario groups presented before implementation"
+      - "The user explicitly replied: 是"
+      - "Approval includes ADR-003's first-preview-confirmed session auto-application and labelled source correction policy; no independent GitHub review, deployment or remote publication is implied"
+    risks_reviewed:
+      - "Two-hour placeholders must remain visibly provisional; title/status changes must not silently confirm effort"
+      - "Batch updates must be selected, validated and atomic; legacy workspaces/backup facts must not be overwritten"
+      - "Source sync must preserve explicit local corrections/deletions, update existing history and never delete records merely absent from one response"
+      - "Automatic requests need first-import consent, visible-page timing, no overlap, draft deferral, safe failure pauses and current-identity/current-state checks"
+      - "Keys and sync authorisation remain page-memory only; no new endpoint, OAuth claim, billed AI call or change to deterministic schedule authority"
+    status: "Implemented with synthetic browser acceptance: default import/views, atomic batch hours, corrections/exclusions/restoration, no-op plan retention, rate-limit preservation, reconnect/reload consent reset and 320/390/800/1440px layout. Final full verification passed with 23 requirements, 90 offline tests, 13 fixed evaluations, structure/type/lint and production build; detailed evidence is recorded in validation-evidence.md. No real provider request, independent GitHub review, upload or deployment in this revision."
   - date: "2026-11-16"
     actor: "Codex with a delegated synthetic runtime-test reviewer, under user approval"
     purpose: "Diagnose and fix the Canvas connection failure and the identical AI transport incompatibility"

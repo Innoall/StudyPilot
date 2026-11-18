@@ -3,11 +3,16 @@ import { DAY_MS, MINUTE_MS, hongKongDate, hongKongDayStart, hongKongWeekday } fr
 export type Course = {
   id: string; code: string; name: string; color: string;
   source?: "manual" | "canvas"; sourceId?: string;
+  localOverrides?: Array<"code" | "name" | "color">;
+  canvasValues?: { code: string; name: string; color: string };
 };
 export type Assignment = {
   id: string; courseId: string; title: string; dueAt: string; estimatedHours: number;
   priority: "high" | "medium" | "low"; status: "todo" | "doing" | "done";
   source?: "manual" | "canvas"; sourceId?: string;
+  effortConfirmed?: boolean;
+  localOverrides?: Array<"title" | "dueAt" | "courseId" | "status">;
+  canvasValues?: { title: string; dueAt: string; courseId: string; status: "todo" | "doing" | "done" };
 };
 export type Availability = { day: number; start: string; end: string };
 export type PlanBlock = {

@@ -18,5 +18,14 @@
   },
   "githubReviewId": null,
   "approvedCommit": null,
-  "mergeStatus": "Pending independent pre-implementation test review evidence on GitHub"
+  "mergeStatus": "Pending independent pre-implementation test review evidence on GitHub",
+  "canvasUxAuthorisation": {
+    "decision": "approved",
+    "date": "2026-11-18",
+    "source": "User reply to the Canvas UX execution plan and 20-group test-plan approval question in the current Codex conversation",
+    "verbatim": "是",
+    "plan": "StudyPilot-Canvas-UX-plan-2026-11-18.md (presented before implementation)",
+    "scope": "Provisional imported effort and atomic batch review; first-preview-confirmed page-session automatic sync; labelled local corrections and recoverable source exclusions; default current-work filtering; compatibility, safety regression and synthetic browser acceptance",
+    "limitation": "Interactive implementation, ADR-003 and test-case authorisation only. Independent GitHub tests-only review, live-provider evidence, remote publication and deployment are not implied."
+  }
 }

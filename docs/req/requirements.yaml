@@ -17,13 +17,13 @@
     {
       "id": "FR-002",
       "type": "functional",
-      "statement": "A user can create, prioritise, update, and remove assignments with deadlines and estimated effort.",
+      "statement": "A user can create, prioritise, update and remove assignments, review provisional Canvas effort individually or in selected batches, and filter current, overdue, completed or all work without deleting history.",
       "priority": "Must",
-      "tradeoff": "Recurring tasks are deferred.",
+      "tradeoff": "Recurring tasks are deferred; unconfirmed effort remains usable with an explicit provisional warning rather than being silently excluded from planning.",
       "fitCriterion": {
-        "metric": "supported assignment operations",
-        "threshold": "5 of 5",
-        "verification": "offline acceptance suite"
+        "metric": "assignment CRUD, atomic effort review and exact-clock task-view scenarios passing",
+        "threshold": "100%",
+        "verification": "test/offline/data.test.mjs, canvas-ux.test.mjs and synthetic browser acceptance"
       }
     },
     {
@@ -65,13 +65,13 @@
     {
       "id": "FR-006",
       "type": "functional",
-      "statement": "The system reads current-user Canvas planning facts through a bounded read-only adapter and previews them before idempotent import.",
+      "statement": "The system reads current-user Canvas planning facts through a bounded read-only adapter, previews the first import and permits explicitly authorised page-session sync while preserving user effort, labelled local corrections and recoverable source exclusions.",
       "priority": "Should",
-      "tradeoff": "Personal tokens are for controlled self-testing; shared production requires approved OAuth.",
+      "tradeoff": "Personal tokens are for controlled self-testing; shared production requires approved OAuth. Automatic sync ends with the page connection, and new imports exclude expired/completed work by default without deleting existing history.",
       "fitCriterion": {
-        "metric": "valid fixtures and repeat imports mapped correctly",
+        "metric": "first-import scope, idempotent merge, local correction/exclusion and authorised session-sync scenarios passing",
         "threshold": "100%",
-        "verification": "test/offline/providers.test.mjs and data.test.mjs; opt-in live Canvas test"
+        "verification": "test/offline/providers.test.mjs, data.test.mjs and canvas-ux.test.mjs; synthetic browser acceptance; separate opt-in live Canvas test"
       }
     },
     {

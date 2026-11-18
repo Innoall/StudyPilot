@@ -22,7 +22,7 @@ The application supports personal AI keys for CityU CSLab, OpenAI and DeepSeek, 
 
 ### 2. 下载和启动
 
-安装 [Git](https://git-scm.com/) 和 [Node.js](https://nodejs.org/)，Node.js 需为 **22.13 或更新版本**。源码仓库为 [Innoall/StudyPilot](https://github.com/Innoall/StudyPilot)，当前为私有仓库，访问和克隆需要获准的 GitHub 账号。
+安装 [Git](https://git-scm.com/) 和 [Node.js](https://nodejs.org/)，Node.js 需为 **22.13 或更新版本**。源码仓库为 [Innoall/StudyPilot](https://github.com/Innoall/StudyPilot)，仓库已公开，可直接查看和克隆。
 
 ```sh
 git clone https://github.com/Innoall/StudyPilot.git
@@ -192,3 +192,13 @@ The desktop and mobile interfaces now share a spacious midnight-blue workspace, 
 The refresh passed 58 offline tests, 13 fixed AI/prompt evaluations, type/lint/schema/structural checks and production build. Actual production startup served HTTP 200 in the local verification. Responsive checks covered 1440px, 1920px and all five pages at 390px, including task editing and generation through the real rule API. External service calls were not part of this visual refresh.
 
 If a macOS launcher downloaded from the GitHub web interface lacks executable permission, run `chmod +x Start-StudyPilot.command` once before opening it. Terminal startup with `npm ci` and `npm run dev` is also supported.
+
+## 2026-11-18 Canvas coursework improvements
+
+Canvas study effort is now explicitly provisional until reviewed. In **Courses & tasks → Review hours**, select tasks and enter different remaining hours or fill the selected rows with one value, then confirm the batch. Invalid batches apply nothing. Legacy Canvas tasks retain their hours and request review once; future syncs preserve confirmed effort and priority. Editing a title or status alone does not confirm effort. Plans remain available with a clear provisional-hours notice.
+
+The default **Upcoming** view shows future unfinished tasks. **Overdue**, **Completed** and **All** retain access to history; filtering does not erase data or conceal the rule planner's overdue-work warnings. Initial imports skip new overdue/completed tasks unless selected in the preview. Existing source records can still receive extensions or submission updates.
+
+After the first preview, explicitly choose **Enable automatic sync for this page session** to check Canvas every five minutes while the page is visible. The task page also has **Sync Canvas**, last-read time and change counts. Background pages and open editors defer automatic work; rate/authentication failures pause it. Reconnecting, restoring a backup, disconnecting or refreshing clears the session choice. This uses the existing controlled token-testing adapter; it is not background OAuth login or persistent credentials.
+
+Manual source corrections are labelled and survive sync. The editor shows the latest Canvas values and offers restoration. Deleting an imported item adds a local exclusion so it does not return on the next sync; use **Hidden Canvas items → Restore**, then sync, to import it again. Nothing is written back to Canvas. New optional learning metadata remains in validated local workspaces/backups; credentials and sync consent do not. See ADR-003 and the validation evidence for scope and actual checks.

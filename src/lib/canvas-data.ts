@@ -43,10 +43,10 @@ export function normaliseCanvasSnapshot(value: unknown): CanvasSnapshot {
     if (raw.published === false) continue;
     const submission = raw.submission && typeof raw.submission === "object" ? raw.submission as Record<string, unknown> : undefined;
     const complete = submission?.excused === true || ["submitted", "graded", "pending_review"].includes(String(submission?.workflow_state));
-    assignments.push({ id: `canvas-assignment-${key}`, courseId: `canvas-course-${courseId}`, title: canvasLabel(raw.name, 240, "Untitled assignment"), dueAt: new Date(raw.due_at).toISOString(), estimatedHours: 2, priority: "medium", status: complete ? "done" : "todo", source: "canvas", sourceId: id });
+    assignments.push({ id: `canvas-assignment-${key}`, courseId: `canvas-course-${courseId}`, title: canvasLabel(raw.name, 240, "Untitled assignment"), dueAt: new Date(raw.due_at).toISOString(), estimatedHours: 2, effortConfirmed: false, priority: "medium", status: complete ? "done" : "todo", source: "canvas", sourceId: id });
   }
   if (undated) warnings.push(`${undated} Canvas item${undated === 1 ? " has" : "s have"} no deadline and were not imported. Add any required tasks manually.`);
-  if (assignments.length) warnings.push("Imported tasks default to 2 estimated hours and medium priority. Review these estimates before generating a plan.");
+  if (assignments.length) warnings.push("Canvas does not supply study effort. New tasks use a provisional 2 hours and medium priority; review and confirm hours individually or in bulk.");
   return { courses, assignments, warnings };
 }
 
